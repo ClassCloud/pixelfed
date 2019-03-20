@@ -146,6 +146,12 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
+       
+        /*
+         * Adldap2 service provider...
+         */
+        Adldap\Laravel\AdldapServiceProvider::class,
+        Adldap\Laravel\AdldapAuthServiceProvider::class,
 
         /*
          * Package Service Providers...
@@ -216,6 +222,7 @@ return [
         'PrettyNumber' => App\Util\Lexer\PrettyNumber::class,
         'Purify'       => Stevebauman\Purify\Facades\Purify::class,
         'FFMpeg'       => Pbmedia\LaravelFFMpeg\FFMpegFacade::class,
+        'Adldap'       => Adldap\Laravel\Facades\Adldap::class,
     ],
 
 ];
