@@ -65,9 +65,7 @@
             </div>
             <div class="card mt-3">
                 <div class="card-body">
-                    <a class="btn btn-link font-weight-bold" href="{{ route('password.request') }}">
-                        {{ __('Forgot Your Password?') }}
-                    </a>
+                   
                     <a class="btn btn-link font-weight-bold" href="{{ route('register') }}">
                         {{ __('Register New Account') }}
                     </a>
