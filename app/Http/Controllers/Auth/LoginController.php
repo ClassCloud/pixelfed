@@ -38,7 +38,12 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
     }
+ /* rest of the class */
 
+    public function username()
+    {
+        return config('ldap_auth.usernames.eloquent');
+    }
     /**
      * Validate the user login request.
      *
@@ -49,7 +54,7 @@ class LoginController extends Controller
     public function validateLogin($request)
     {
         $rules = [
-            $this->username() => 'required|email',
+            $this->username() => 'required|username',
             'password'        => 'required|string|min:6',
         ];
 
