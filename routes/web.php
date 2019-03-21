@@ -50,8 +50,10 @@ Route::domain(config('pixelfed.domain.app'))->middleware(['validemail', 'twofact
     Route::get('/', 'SiteController@home')->name('timeline.personal');
     Route::post('/', 'StatusController@store');
 
-    Auth::routes();
-
+    //Auth::routes();
+    Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
+    Route::post('login', 'Auth\LoginController@login');
+    Route::post('logout', 'Auth\LoginController@logout')->name('logout');
     Route::get('.well-known/webfinger', 'FederationController@webfinger')->name('well-known.webfinger');
     Route::get('.well-known/nodeinfo', 'FederationController@nodeinfoWellKnown')->name('well-known.nodeinfo');
     Route::get('.well-known/host-meta', 'FederationController@hostMeta')->name('well-known.hostMeta');
