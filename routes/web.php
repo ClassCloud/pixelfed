@@ -87,6 +87,7 @@ Route::domain(config('pixelfed.domain.app'))->middleware(['validemail', 'twofact
             Route::get('timelines/home', 'PublicApiController@homeTimelineApi');
         });
         Route::group(['prefix' => 'v2'], function() {
+            Route::get('config', 'ApiController@siteConfiguration');
             Route::get('discover', 'InternalApiController@discover');
             Route::get('discover/posts', 'InternalApiController@discoverPosts');
             Route::get('profile/{username}/status/{postid}', 'PublicApiController@status');
@@ -96,10 +97,10 @@ Route::domain(config('pixelfed.domain.app'))->middleware(['validemail', 'twofact
             Route::get('status/{id}/replies', 'InternalApiController@statusReplies');
             Route::post('moderator/action', 'InternalApiController@modAction');
             Route::get('discover/categories', 'InternalApiController@discoverCategories');
+            Route::post('status/compose', 'InternalApiController@composePost');
         });
         Route::group(['prefix' => 'local'], function () {
             Route::get('i/follow-suggestions', 'ApiController@followSuggestions');
-            Route::post('i/more-comments', 'ApiController@loadMoreComments');
             Route::post('status/compose', 'InternalApiController@compose');
         });
     });

@@ -22,6 +22,7 @@
     <meta name="theme-color" content="#10c5f8">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <link rel="shortcut icon" type="image/png" href="/img/favicon.png?v=2">
+    <link rel="apple-touch-icon" type="image/png" href="/img/favicon.png?v=2">
     <link rel="canonical" href="{{request()->url()}}">
     <link href="{{ mix('css/app.css') }}" rel="stylesheet" data-stylesheet="light">
     @stack('styles')
@@ -31,6 +32,15 @@
     @include('layouts.partial.nav')
     <main id="content">
         @yield('content')
+        @if(Auth::check())
+        <div class="modal pr-0" tabindex="-1" role="dialog" id="composeModal">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <compose-modal></compose-modal>
+            </div>
+          </div>
+        </div>
+        @endif
     </main>
     @include('layouts.partial.footer')
     <script type="text/javascript" src="{{ mix('js/app.js') }}"></script>
@@ -58,13 +68,6 @@
               </li>
             </ul>
         </div>
-    </div>
-    <div class="modal" tabindex="-1" role="dialog" id="composeModal">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          @include('timeline.partial.new-form')
-        </div>
-      </div>
     </div>
     @endif
 </body>

@@ -358,8 +358,8 @@
   <b-modal 
   	id="lightbox" 
   	ref="lightboxModal"
-  	hide-header="true"
-  	hide-footer="true"
+  	hide-header
+  	hide-footer
   	centered
   	size="lg"
   	body-class="p-0"
@@ -712,6 +712,10 @@
 					return;
 				}
 
+				if(window.confirm('Are you sure you want to delete this post?') == false) {
+					return;
+				}
+				
 				axios.post('/i/delete', {
 					type: 'status',
 					item: status.id
