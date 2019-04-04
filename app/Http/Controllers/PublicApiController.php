@@ -110,7 +110,7 @@ class PublicApiController extends Controller
         ]);
         $limit = $request->limit ?? 10;
         $profile = Profile::whereUsername($username)->whereNull('status')->firstOrFail();
-        $status = Status::whereProfileId($profile->id)->findOrFail($postId);
+        $status = Status::whereProfileId($profile->id)->whereCommentsDisabled(false)->findOrFail($postId);
         $this->scopeCheck($profile, $status);
         if($request->filled('min_id') || $request->filled('max_id')) {
             if($request->filled('min_id')) {
@@ -248,6 +248,8 @@ class PublicApiController extends Controller
                         'is_nsfw',
                         'scope',
                         'local',
+                        'reply_count',
+                        'comments_disabled',
                         'created_at',
                         'updated_at'
                       )->where('id', $dir, $id)
@@ -274,6 +276,8 @@ class PublicApiController extends Controller
                         'is_nsfw',
                         'scope',
                         'local',
+                        'reply_count',
+                        'comments_disabled',
                         'created_at',
                         'updated_at'
                       )->whereIn('type', ['photo', 'photo:album', 'video', 'video:album'])
@@ -348,6 +352,8 @@ class PublicApiController extends Controller
                         'is_nsfw',
                         'scope',
                         'local',
+                        'reply_count',
+                        'comments_disabled',
                         'created_at',
                         'updated_at'
                       )->whereIn('type', ['photo', 'photo:album', 'video', 'video:album'])
@@ -375,6 +381,8 @@ class PublicApiController extends Controller
                         'is_nsfw',
                         'scope',
                         'local',
+                        'reply_count',
+                        'comments_disabled',
                         'created_at',
                         'updated_at'
                       )->whereIn('type', ['photo', 'photo:album', 'video', 'video:album'])
@@ -578,9 +586,9 @@ class PublicApiController extends Controller
                     $following = Follower::whereProfileId($pid)->pluck('following_id');
                     return $following->push($pid)->toArray();
                 });
-                $visibility = true == in_array($profile->id, $following) ? ['public', 'unlisted', 'private'] : ['public'];
+                $visibility = true == in_array($profile->id, $following) ? ['public', 'unlisted', 'private'] : ['public', 'unlisted'];
             } else {
-                $visibility = ['public'];
+                $visibility = ['public', 'unlisted'];
             }
         }
 
@@ -606,8 +614,8 @@ class PublicApiController extends Controller
           ->whereLocal(true)
           ->whereNull('uri')
           ->where('id', $dir, $id)
-          ->whereIn('visibility',$visibility)
-          ->orderBy('created_at', 'desc')
+          ->whereIn('visibility', $visibility)
+          ->latest()
           ->limit($limit)
           ->get();
 

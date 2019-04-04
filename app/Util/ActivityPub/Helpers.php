@@ -135,6 +135,10 @@ class Helpers {
 			'127.0.0.1', 'localhost', '::1'
 		];
 
+		if(mb_substr($url, 0, 8) !== 'https://') {
+			return false;
+		}
+
 		$valid = filter_var($url, FILTER_VALIDATE_URL);
 
 		if(in_array(parse_url($valid, PHP_URL_HOST), $localhosts)) {
@@ -166,6 +170,10 @@ class Helpers {
 
 	public static function fetchFromUrl($url)
 	{
+		$url = self::validateUrl($url);
+		if($url == false) {
+			return;
+		}
 		$res = Zttp::withHeaders(self::zttpUserAgent())->get($url);
 		$res = json_decode($res->body(), true, 8);
 		if(json_last_error() == JSON_ERROR_NONE) {
@@ -323,7 +331,7 @@ class Helpers {
 			$profile->key_id = $res['publicKey']['id'];
 			$profile->save();
 			if($runJobs == true) {
-				RemoteFollowImportRecent::dispatch($res, $profile);
+				// RemoteFollowImportRecent::dispatch($res, $profile);
 				CreateAvatar::dispatch($profile);
 			}
 		}
